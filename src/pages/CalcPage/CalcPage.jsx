@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function NewOrderPage() {
+export default function CalcPage() {
   return (
     <h1>NewOrderPage</h1>
   );
