@@ -11,7 +11,7 @@ export default function CompListPage() {
   return (
     <>
       <h1>CompListPage</h1>
-      <button onClick={handleCheckToken}>Check When My Login Expires</button>
+      {/* <button onClick={handleCheckToken}>Check When My Login Expires</button> */}
     </>
   );
 }
