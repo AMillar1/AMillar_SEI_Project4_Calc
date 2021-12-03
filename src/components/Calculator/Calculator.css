@@ -36,11 +36,11 @@
 }
 
 .output .previous-operand {
-    color: whitesmoke;
+    color: rgb(101, 173, 80);
     font-size: 1.5rem;
 }
 
 .output .current-operand {
-    color: white;
+    color: rgb(228, 81, 81);
     font-size: 2.5rem;
 }
