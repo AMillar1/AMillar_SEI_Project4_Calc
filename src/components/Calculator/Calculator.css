@@ -5,6 +5,20 @@
     grid-template-rows: minmax(7rem, auto), repeat(5, 6rem);
 }
 
+.calculator-grid > button {
+    cursor: pointer;
+    font-size: 2rem;
+    border: 1px solid white;
+    justify-content: center;
+    outline: none;
+    background-color: rgba(5, 5, 5, 0.75);
+  }
+  
+  .calculator-grid > button:hover,
+  .calculator-grid > button:focus {
+    background-color: rgba(126, 123, 123, 0.9);
+  }
+
 .span-two {
     grid-column: span 2;
 }
