@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import { getUser } from '../../utilities/users-service';
@@ -7,8 +7,11 @@ import CalcPage from '../CalcPage/CalcPage';
 import CompListPage from '../CompListPage/CompListPage';
 import NavBar from '../../components/NavBar/NavBar';
 
+
 export default function App() {
+  
   const [user, setUser] = useState(getUser());
+  // const [{currentOperand, previousOperand, operation, log, overwrite}, dispatch] = useReducer(reducer, {})
   return (
     <main className="App">
       { user ?

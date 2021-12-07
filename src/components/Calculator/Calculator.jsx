@@ -16,6 +16,13 @@ export const ACTIONS = {
 function reducer(state, {type, payload}) {
     switch(type) {
         case ACTIONS.ADD_DIGIT:
+            if (state.overwrite) {
+                return {
+                    ...state,
+                    currentOperand: payload.digit,
+                    overwrite: false, 
+                }
+            }
             if(payload.digit === "0" && state.currentOperand === "0") {
                 return state
             } // if the current state is only a zero, don't add a zero. This prevents arbitrary beginning strings of zeros
@@ -28,13 +35,39 @@ function reducer(state, {type, payload}) {
             }
         case ACTIONS.CLEAR:
             return {}
+
+        case ACTIONS.EVALUATE:
+            if (state.operation == null || state.currentOperand == null || state.previousOperand == null) {
+                return state
+            } 
+            return {
+                ...state, 
+                log: [state.currentOperand, state.previousOperand, state.operation],
+                overwrite: true,
+                previousOperand: null,
+                operation: null,
+                currentOperand: evaluate(state),
+            }
+
+
+
         case ACTIONS.CHOOSE_OPERATION: 
             if (state.currentOperand == null && state.previousOperand == null) {
                 return state // do nothing if the state is empty
             }
+
+        if (state.currentOperand === null) {
+            return {
+                ...state, 
+                operation: payload.operation, 
+            }
+        }
+
             if (state.previousOperand == null) {
                 return {
                     ...state, //the state as it exists
+                    log: [...state.log, `${state.currentOperand} ${payload.operation}`],
+                    log: [`${state.currentOperand} ${payload.operation}`],
                     operation: payload.operation, //whatever button what clicked --that's what payload tracks
                     previousOperand: state.currentOperand, //shift the current operand 'up'
                     currentOperand: null //reset the current operand. 
@@ -74,11 +107,12 @@ function evaluate({currentOperand, previousOperand, operation}) {
 
 
 export default function Calculator() {
-    const [{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer, {})
+    const [{currentOperand, previousOperand, operation, log, overwrite}, dispatch] = useReducer(reducer, {})
     
     // dispatch({ type: ACTIONS.ADD_DIGIT, payload: { digit: 1 }})
 
     return(
+        <div>
         <div className="calculator-grid">
             <div className="output">
                 <div className="previous-operand">{previousOperand} {operation}</div>
@@ -101,7 +135,9 @@ export default function Calculator() {
             <ButtonOperation operation="-" dispatch={dispatch} />
             <ButtonDigit digit="." dispatch={dispatch} />
             <ButtonDigit digit="0" dispatch={dispatch} />
-            <button className="span-two">=</button>
+            <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
+        </div>
+        <div>{log}</div>
         </div>
     )
 }
