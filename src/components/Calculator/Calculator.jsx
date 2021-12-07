@@ -2,6 +2,8 @@ import { useReducer } from "react"
 import "../Calculator/Calculator.css"
 import ButtonDigit from "../Button/ButtonDigit"
 import ButtonOperation from "../Button/ButtonOperation"
+import LoginForm from "../LoginForm/LoginForm"
+import { parse } from "dotenv"
 
 
 export const ACTIONS = {
@@ -10,6 +12,7 @@ export const ACTIONS = {
     CLEAR: 'clear',
     DELETE_DIGIT: 'delete-digit',
     EVALUATE: 'evaluate',
+    SAVE_VALUE: 'save-value',
 }
 
 
@@ -31,7 +34,7 @@ function reducer(state, {type, payload}) {
             } // if there is already a decimal point in the input, do not add another one. 
             return {
                 ...state, 
-                currentOperand: `${state.currentOperand || ""}${payload.digit}`
+                currentOperand: `${state.currentOperand || ""}${payload.digit}`,
             }
         case ACTIONS.CLEAR:
             return {}
@@ -42,7 +45,6 @@ function reducer(state, {type, payload}) {
             } 
             return {
                 ...state, 
-                log: [state.currentOperand, state.previousOperand, state.operation],
                 overwrite: true,
                 previousOperand: null,
                 operation: null,
@@ -66,19 +68,23 @@ function reducer(state, {type, payload}) {
             if (state.previousOperand == null) {
                 return {
                     ...state, //the state as it exists
-                    log: [...state.log, `${state.currentOperand} ${payload.operation}`],
-                    log: [`${state.currentOperand} ${payload.operation}`],
                     operation: payload.operation, //whatever button what clicked --that's what payload tracks
                     previousOperand: state.currentOperand, //shift the current operand 'up'
-                    currentOperand: null //reset the current operand. 
+                    log: [...state.log, `${state.currentOperand}${payload.operation}`],
+                    currentOperand: null, //reset the current operand. 
                 }
             }
             return {
                 ...state, 
+                log: [...state.log, `${state.currentOperand}`, `${evaluate(state)}${payload.operation}`],
                 previousOperand: evaluate(state),
                 operation: payload.operation,
                 currentOperand: null,
-
+            }
+        case ACTIONS.SAVE_VALUE:
+            return {
+                ...state, 
+                saved: [...state.saved, `${payload.item}`]
             }
     }
 }
@@ -106,9 +112,11 @@ function evaluate({currentOperand, previousOperand, operation}) {
 }
 
 
+
+
 export default function Calculator() {
-    const [{currentOperand, previousOperand, operation, log, overwrite}, dispatch] = useReducer(reducer, {})
-    
+    const [{currentOperand, previousOperand, operation, log, saved, overwrite}, dispatch] = useReducer(reducer, { log: [], saved: []})
+    console.log(log);
     // dispatch({ type: ACTIONS.ADD_DIGIT, payload: { digit: 1 }})
 
     return(
@@ -137,7 +145,16 @@ export default function Calculator() {
             <ButtonDigit digit="0" dispatch={dispatch} />
             <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
         </div>
-        <div>{log}</div>
+        <div>{log.map((item => 
+            <div>{item}
+                <button onClick={() => dispatch({ type: ACTIONS.SAVE_VALUE, payload: {item} })}>Save</button>
+            </div>))}
+            </div>
+        <div>{saved.map((value => 
+            <div>{parseFloat(value)}
+                <ButtonDigit digit={`${parseFloat(value)}`} dispatch={dispatch} />
+            </div>))}
+            </div>
         </div>
     )
 }
