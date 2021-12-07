@@ -82,10 +82,13 @@ function reducer(state, {type, payload}) {
                 currentOperand: null,
             }
         case ACTIONS.SAVE_VALUE:
-            return {
-                ...state, 
-                saved: [...state.saved, `${payload.item}`]
+            if (!state.saved.includes(payload.item)) {
+                return {
+                    ...state, 
+                    saved: [...state.saved, `${payload.item}`]
+                }
             }
+            return state
     }
 }
 
@@ -112,15 +115,13 @@ function evaluate({currentOperand, previousOperand, operation}) {
 }
 
 
-
-
 export default function Calculator() {
     const [{currentOperand, previousOperand, operation, log, saved, overwrite}, dispatch] = useReducer(reducer, { log: [], saved: []})
     console.log(log);
     // dispatch({ type: ACTIONS.ADD_DIGIT, payload: { digit: 1 }})
 
     return(
-        <div>
+        <div className="CalcLayout">
         <div className="calculator-grid">
             <div className="output">
                 <div className="previous-operand">{previousOperand} {operation}</div>
@@ -145,14 +146,13 @@ export default function Calculator() {
             <ButtonDigit digit="0" dispatch={dispatch} />
             <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
         </div>
-        <div>{log.map((item => 
+        <div className="log">{log.map((item => 
             <div>{item}
                 <button onClick={() => dispatch({ type: ACTIONS.SAVE_VALUE, payload: {item} })}>Save</button>
             </div>))}
             </div>
-        <div>{saved.map((value => 
-            <div>{parseFloat(value)}
-                <ButtonDigit digit={`${parseFloat(value)}`} dispatch={dispatch} />
+        <div className="saved">{saved.map((value => 
+            <div><ButtonDigit digit={`${parseFloat(value)}`} dispatch={dispatch} />
             </div>))}
             </div>
         </div>
