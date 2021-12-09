@@ -4,9 +4,9 @@
 
 Art of Arithmetic is a website that allows users to add a component of working memory to the functionality of a typical callculator. One part of the app mimics a typical handheld calculator, but the user also has access to a log of all previous inputs and operations. Additonally, a user can 'save' specific values in a table, so that frequently used/cumbersome values can input with ease. A user can also save any log of inputs for reference later. 
 
-![Login](https://imgur.com/HLnJMcl)
-![Crunch Some Numbers](https://imgur.com/RTWl2TO)
-![Reflect on Past Computations](https://imgur.com/ko63dPT)
+![Login](https://i.imgur.com/HLnJMcl.png)
+![Crunch Some Numbers](https://i.imgur.com/RTWl2TO.png)
+![Reflect on Past Computations](https://i.imgur.com/ko63dPT.png)
 
 
 ## Technologies Used
@@ -33,4 +33,5 @@ The purpose of this application is to allow users to peform calculations with th
 - Allow users to input via the keyboard/text area in the calculator
 - Allow users to enter the calculator via a saved log, with the state reset to the state of that log
 - Allow users to name variables/saved values that they create
+- Solve several calculator bugs/edge cases. 
 
