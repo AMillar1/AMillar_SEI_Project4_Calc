@@ -48,7 +48,8 @@
 .CalcLayout {
     display: flex;
     flex-direction: row;
-    /* align-items: flex-end; */
+    grid-template-columns: repeat(3, 6rem);
+    align-items: flex-start;
     justify-content: space-around;
     padding: .75rem;
 }
@@ -56,7 +57,7 @@
 .log {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-start;
     background-color: tomato;
 }
@@ -64,7 +65,7 @@
 .saved {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
     justify-content: flex-start;
     background-color: turquoise;
 }

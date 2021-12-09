@@ -16,10 +16,14 @@ export default function CompListPage() {
 
   return (
     <>
-      <h1>CompListPage</h1>
-      {logs.map(log => <div>{log.items}</div>)}
-      
-      
+      <h1>Log History</h1>
+      {logs.map(log => 
+      <div className="form-container">
+        {log.items.map(item => 
+        <div>{item}
+        </div>)} 
+        <button>Delete</button>
+      </div>)}
     </>
   );
 }

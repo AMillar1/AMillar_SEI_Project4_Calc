@@ -124,13 +124,6 @@ function evaluate({currentOperand, previousOperand, operation}) {
     return computation.toString()
 }
 
-// async function addLog() {
-//     const newLog = await logAPI.saveLog(state);
-//     const [{log, saved}, dispatch] = useReducer(reducer, { log: [], saved: []});
-//     dispatch(
-//         { type: ACTIONS., payload: {digit}})
-// }
-
 
 export default function Calculator() {
     const [{currentOperand, previousOperand, operation, log, saved, overwrite}, dispatch] = useReducer(reducer, { log: [], saved: []})
@@ -163,13 +156,17 @@ export default function Calculator() {
             <ButtonDigit digit="0" dispatch={dispatch} />
             <button className="span-two" onClick={() => dispatch({ type: ACTIONS.EVALUATE })}>=</button>
         </div>
-        <div className="log">{log.map((item => 
+        <div className="log">
+            <div>Log</div>
+            {log.map((item => 
             <div>{item}
                 <button onClick={() => dispatch({ type: ACTIONS.SAVE_VALUE, payload: {item} })}>Save</button>
             </div>))}
             <button onClick={() => logAPI.saveLog(log)}>Save Log</button>
             </div>
-        <div className="saved">{saved.map((value => 
+        <div className="saved">
+            <div>Saved Values</div>
+            {saved.map((value => 
             <div>
                 <ButtonDigit digit={`${parseFloat(value)}`} dispatch={dispatch} />
                 <button onClick={() => dispatch({ type: ACTIONS.DELETE_SAVED, payload: {value}})}>X</button>

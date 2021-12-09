@@ -11,9 +11,9 @@ export default function NavBar(props) {
 
   return (
     <nav>
-      <Link to="/complist">Past Crunches</Link>
+      <Link to="/complist">Logs</Link>
       &nbsp; | &nbsp;
-      <Link to="/calc">Crunch</Link>
+      <Link to="/calc">Calculator</Link>
       &nbsp; | &nbsp;
       <span>Welcome, {props.user.name}</span>
       &nbsp; | &nbsp;
