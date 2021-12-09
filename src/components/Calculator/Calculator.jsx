@@ -4,6 +4,7 @@ import ButtonDigit from "../Button/ButtonDigit"
 import ButtonOperation from "../Button/ButtonOperation"
 import LoginForm from "../LoginForm/LoginForm"
 import { parse } from "dotenv"
+import * as logAPI from "../../utilities/log-api"
 
 
 export const ACTIONS = {
@@ -13,8 +14,9 @@ export const ACTIONS = {
     DELETE_DIGIT: 'delete-digit',
     EVALUATE: 'evaluate',
     SAVE_VALUE: 'save-value',
+    DELETE_SAVED: 'delete-saved',
+    SEND_LOG: 'send-log',
 }
-
 
 function reducer(state, {type, payload}) {
     switch(type) {
@@ -89,6 +91,14 @@ function reducer(state, {type, payload}) {
                 }
             }
             return state
+        case ACTIONS.DELETE_SAVED:
+            let savedArr = [...state.saved];
+            return {
+                ...state, 
+                saved: savedArr.filter(item => item !== payload.value)
+            }
+        case ACTIONS.SAVE_LOG:
+            
     }
 }
 
@@ -113,6 +123,13 @@ function evaluate({currentOperand, previousOperand, operation}) {
     }
     return computation.toString()
 }
+
+// async function addLog() {
+//     const newLog = await logAPI.saveLog(state);
+//     const [{log, saved}, dispatch] = useReducer(reducer, { log: [], saved: []});
+//     dispatch(
+//         { type: ACTIONS., payload: {digit}})
+// }
 
 
 export default function Calculator() {
@@ -150,9 +167,12 @@ export default function Calculator() {
             <div>{item}
                 <button onClick={() => dispatch({ type: ACTIONS.SAVE_VALUE, payload: {item} })}>Save</button>
             </div>))}
+            <button onClick={() => logAPI.saveLog(log)}>Save Log</button>
             </div>
         <div className="saved">{saved.map((value => 
-            <div><ButtonDigit digit={`${parseFloat(value)}`} dispatch={dispatch} />
+            <div>
+                <ButtonDigit digit={`${parseFloat(value)}`} dispatch={dispatch} />
+                <button onClick={() => dispatch({ type: ACTIONS.DELETE_SAVED, payload: {value}})}>X</button>
             </div>))}
             </div>
         </div>

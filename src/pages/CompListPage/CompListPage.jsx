@@ -1,17 +1,25 @@
-import React from 'react';
-import { checkToken } from '../../utilities/users-service';
+import { useEffect, useState} from 'react';
+import * as logAPI from "../../utilities/log-api"
+
 
 export default function CompListPage() {
 
-  async function handleCheckToken() {
-    const expDate = await checkToken();
-    console.log(expDate);
-  }
+  const [logs, setLogs] = useState([]);
+
+  useEffect(function() {
+    async function getLogs() {
+      const logs = await logAPI.getAll();
+      setLogs(logs);
+    }
+    getLogs();
+  }, []);
 
   return (
     <>
       <h1>CompListPage</h1>
-      {/* <button onClick={handleCheckToken}>Check When My Login Expires</button> */}
+      {logs.map(log => <div>{log.items}</div>)}
+      
+      
     </>
   );
 }
